@@ -1,0 +1,18 @@
+{
+    "require": {
+        "vlucas/phpdotenv": "^5.6",
+        "illuminate/database": "^10.0",
+        "afaztech/neili": "^2.2.4",
+        "monolog/monolog": "^3.5",
+        "slim/slim": "^4.12",
+        "slim/psr7": "^1.6",
+        "afaztech/glyphify": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bot\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

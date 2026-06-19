@@ -1,0 +1,23 @@
+<div class="page">
+    <div class="panel">
+        <div class="panel-header">
+            <h2>🛡️ تنظیمات آنتی اسپم</h2>
+            <button class="btn btn-primary" onclick="loadAntiSpamConfig()">🔄 بروزرسانی</button>
+        </div>
+        <div class="modal-body">
+            <form id="anti-spam-form" onsubmit="updateAntiSpam(event)">
+                <div class="form-group">
+                    <label>حداکثر پیام قبل از بلاک</label>
+                    <input type="number" id="spam-max-messages" placeholder="مثال: 5" required>
+                </div>
+                <div class="form-group">
+                    <label>مدت بلاک (ثانیه)</label>
+                    <input type="number" id="spam-block-duration" placeholder="مثال: 3600" required>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-primary">ذخیره تنظیمات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

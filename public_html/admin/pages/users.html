@@ -1,0 +1,67 @@
+<div class="page">
+    <div class="panel">
+        <div class="panel-header">
+            <h2>👥 مدیریت کاربران</h2>
+            <div class="btn-group">
+                <input type="text" id="search-user" class="filter-input" placeholder="جستجوی کاربر...">
+                <button class="btn btn-primary" onclick="searchUsers()">🔍 جستجو</button>
+                <button class="btn btn-primary" onclick="loadUsers()">🔄 بروزرسانی</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>شناسه</th>
+                        <th>نام کاربری</th>
+                        <th>نام</th>
+                        <th>وضعیت</th>
+                        <th>تاریخ عضویت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="users-list"></tbody>
+            </table>
+        </div>
+        <div class="pagination" id="users-pagination"></div>
+    </div>
+</div>
+
+<div id="user-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="user-modal-title">اطلاعات کاربر</h3>
+            <button class="modal-close" onclick="closeUserModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="user-modal-content"></div>
+        <div class="modal-footer">
+            <button class="btn" onclick="closeUserModal()">بستن</button>
+        </div>
+    </div>
+</div>
+
+<div id="block-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>بلاک کاربر</h3>
+            <button class="modal-close" onclick="closeBlockModal()">&times;</button>
+        </div>
+        <form onsubmit="blockUser(event)">
+            <div class="modal-body">
+                <input type="hidden" id="block-user-id">
+                <div class="form-group">
+                    <label>دلیل بلاک</label>
+                    <input type="text" id="block-reason" placeholder="دلیل بلاک (اختیاری)">
+                </div>
+                <div class="form-group">
+                    <label>مدت بلاک (ثانیه)</label>
+                    <input type="number" id="block-duration" placeholder="خالی = نامحدود">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="closeBlockModal()">انصراف</button>
+                <button type="submit" class="btn btn-danger">بلاک</button>
+            </div>
+        </form>
+    </div>
+</div>

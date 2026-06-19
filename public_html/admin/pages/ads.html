@@ -1,0 +1,65 @@
+<div class="page">
+    <div class="panel">
+        <div class="panel-header">
+            <h2>📺 تبلیغات تصادفی</h2>
+            <button class="btn btn-primary" onclick="loadRandomAdConfig()">🔄 بروزرسانی</button>
+        </div>
+        <div class="modal-body">
+            <form id="random-ad-form" onsubmit="updateRandomAd(event)">
+                <div class="form-checkbox">
+                    <label>
+                        <input type="checkbox" id="random-ad-enabled"> فعال بودن
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>شانس نمایش (درصد)</label>
+                    <input type="number" id="random-ad-chance" placeholder="مثال: 30">
+                </div>
+                <div class="form-group">
+                    <label>آیدی کانال/چت</label>
+                    <input type="text" id="random-ad-chat-id" placeholder="مثال: -1001234567890">
+                </div>
+                <div class="form-group">
+                    <label>آیدی پیام</label>
+                    <input type="number" id="random-ad-message-id" placeholder="مثال: 123">
+                </div>
+                <div class="form-checkbox">
+                    <label>
+                        <input type="checkbox" id="random-ad-is-forward"> فوروارد شود
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">ذخیره تنظیمات</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="panel">
+        <div class="panel-header">
+            <h2>📺 تبلیغات منو</h2>
+            <button class="btn btn-primary" onclick="loadMenuAdConfig()">🔄 بروزرسانی</button>
+        </div>
+        <div class="modal-body">
+            <form id="menu-ad-form" onsubmit="updateMenuAd(event)">
+                <div class="form-checkbox">
+                    <label>
+                        <input type="checkbox" id="menu-ad-enabled"> فعال بودن
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>آیدی کانال/چت</label>
+                    <input type="text" id="menu-ad-chat-id" placeholder="مثال: -1001234567890">
+                </div>
+                <div class="form-group">
+                    <label>آیدی پیام</label>
+                    <input type="number" id="menu-ad-message-id" placeholder="مثال: 123">
+                </div>
+                <div class="form-checkbox">
+                    <label>
+                        <input type="checkbox" id="menu-ad-is-forward"> فوروارد شود
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">ذخیره تنظیمات</button>
+            </form>
+        </div>
+    </div>
+</div>

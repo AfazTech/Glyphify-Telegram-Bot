@@ -1,0 +1,50 @@
+<div class="page">
+    <div class="panel">
+        <div class="panel-header">
+            <h2>🌍 مدیریت زبان</h2>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="loadLanguages()">🔄 بروزرسانی</button>
+                <button class="btn btn-warning" onclick="reloadLanguages()">📂 بازخوانی فایل‌ها</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div id="default-language-display"></div>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>کد زبان</th>
+                        <th>نام زبان</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="languages-list"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- User Language Modal -->
+<div id="user-lang-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>🌍 تغییر زبان کاربر</h3>
+            <button class="modal-close" onclick="closeUserLangModal()">&times;</button>
+        </div>
+        <form onsubmit="updateUserLanguage(event)">
+            <div class="modal-body">
+                <input type="hidden" id="user-lang-user-id">
+                <div class="form-group">
+                    <label>انتخاب زبان</label>
+                    <select id="user-language-select"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="closeUserLangModal()">انصراف</button>
+                <button type="submit" class="btn btn-primary">ذخیره</button>
+            </div>
+        </form>
+    </div>
+</div>

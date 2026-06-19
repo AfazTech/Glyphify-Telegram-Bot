@@ -1,0 +1,42 @@
+<div class="page">
+    <div class="panel">
+        <div class="panel-header">
+            <h2>🔧 تنظیمات عمومی</h2>
+            <button class="btn btn-primary" onclick="loadAllConfigs()">🔄 بروزرسانی</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>کلید</th>
+                        <th>مقدار</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="configs-list"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="config-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>ویرایش تنظیمات</h3>
+            <button class="modal-close" onclick="closeConfigModal()">&times;</button>
+        </div>
+        <form onsubmit="updateConfig(event)">
+            <div class="modal-body">
+                <input type="hidden" id="config-key">
+                <div class="form-group">
+                    <label>مقدار جدید</label>
+                    <input type="text" id="config-value" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="closeConfigModal()">انصراف</button>
+                <button type="submit" class="btn btn-primary">ذخیره</button>
+            </div>
+        </form>
+    </div>
+</div>

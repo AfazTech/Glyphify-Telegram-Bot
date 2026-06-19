@@ -1,0 +1,36 @@
+<div class="page">
+    <div class="panel">
+        <div class="panel-header">
+            <h2>🤖 اطلاعات ربات</h2>
+            <button class="btn btn-primary" onclick="loadBotInfo()">🔄 بروزرسانی</button>
+        </div>
+        <div id="bot-info"></div>
+    </div>
+    
+    <div class="panel">
+        <div class="panel-header">
+            <h2>🔧 حالت تعمیرات</h2>
+        </div>
+        <div class="modal-body">
+            <div id="maintenance-status"></div>
+            <div class="form-group">
+                <label>پیام حالت تعمیرات</label>
+                <textarea id="maintenance-message" rows="3" placeholder="پیامی که به کاربران نمایش داده می‌شود..."></textarea>
+            </div>
+            <div class="form-row">
+                <button class="btn btn-success" onclick="enableMaintenanceMode()">فعال کردن</button>
+                <button class="btn btn-danger" onclick="disableMaintenanceMode()">غیرفعال کردن</button>
+                <button class="btn btn-primary" onclick="updateMaintenanceMessage()">بروزرسانی پیام</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel">
+        <div class="panel-header">
+            <h2>💾 بکاپ دیتابیس</h2>
+        </div>
+        <div class="modal-body">
+            <button class="btn btn-primary" onclick="createBackup()">📥 ایجاد بکاپ</button>
+        </div>
+    </div>
+</div>

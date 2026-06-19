@@ -1,0 +1,53 @@
+<div class="page">
+    <div class="panel">
+        <div class="panel-header">
+            <h2>🔗 جوین اجباری</h2>
+            <button class="btn btn-primary" onclick="openChannelModal()">➕ افزودن کانال</button>
+            <button class="btn btn-primary" onclick="loadMandatoryChannels()">🔄 بروزرسانی</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>شناسه</th>
+                        <th>عنوان</th>
+                        <th>لینک</th>
+                        <th>وضعیت</th>
+                        <th>تاریخ افزودن</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="mandatory-channels-list"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="channel-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="channel-modal-title">افزودن کانال اجباری</h3>
+            <button class="modal-close" onclick="closeChannelModal()">&times;</button>
+        </div>
+        <form onsubmit="addMandatoryChannel(event)">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>شناسه کانال *</label>
+                    <input type="text" id="channel-chat-id" placeholder="مثال: -1001234567890" required>
+                </div>
+                <div class="form-group">
+                    <label>عنوان</label>
+                    <input type="text" id="channel-title" placeholder="عنوان کانال">
+                </div>
+                <div class="form-group">
+                    <label>لینک</label>
+                    <input type="text" id="channel-link" placeholder="https://t.me/...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="closeChannelModal()">انصراف</button>
+                <button type="submit" class="btn btn-primary">افزودن</button>
+            </div>
+        </form>
+    </div>
+</div>

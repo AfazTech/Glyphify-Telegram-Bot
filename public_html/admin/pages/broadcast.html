@@ -1,0 +1,37 @@
+<div class="page">
+    <div class="panel">
+        <div class="panel-header">
+            <h2>📢 پیام همگانی</h2>
+            <button class="btn btn-primary" onclick="loadBroadcastStatus()">🔄 بروزرسانی</button>
+        </div>
+        <div id="broadcast-status"></div>
+    </div>
+    <div class="panel">
+        <div class="panel-header">
+            <h2>⚙️ تنظیمات پیام همگانی</h2>
+        </div>
+        <div class="modal-body">
+            <form id="broadcast-form" onsubmit="setupBroadcast(event)">
+                <div class="form-group">
+                    <label>آیدی کانال/چت</label>
+                    <input type="text" id="broadcast-chat-id" placeholder="مثال: -1001234567890" required>
+                </div>
+                <div class="form-group">
+                    <label>آیدی پیام</label>
+                    <input type="number" id="broadcast-message-id" placeholder="مثال: 123" required>
+                </div>
+                <div class="form-checkbox">
+                    <label>
+                        <input type="checkbox" id="broadcast-is-forward"> فوروارد شود (کپی نشود)
+                    </label>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-primary">ذخیره تنظیمات</button>
+                    <button type="button" class="btn btn-success" onclick="enableBroadcast()">فعال کردن</button>
+                    <button type="button" class="btn btn-danger" onclick="disableBroadcast()">غیرفعال کردن</button>
+                    <button type="button" class="btn btn-warning" onclick="sendBroadcastNow()">ارسال فوری</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
