@@ -102,30 +102,40 @@ class Config
     public function getDatabaseConfig(): array
     {
         $dbType = $this->config['DB_TYPE'] ?? 'sqlite';
-        $databasePath = $this->config['DB_DATABASE'] ?? 'test.sqlite';
         
-        // Ensure database is in root
-        if (!str_starts_with($databasePath, '/') && !str_starts_with($databasePath, __DIR__)) {
-            $databasePath = __DIR__ . '/../../' . $databasePath;
+        if ($dbType === 'sqlite') {
+            $databasePath = $this->config['DB_DATABASE'] ?? 'test.sqlite';
+            if (!str_starts_with($databasePath, '/') && !str_starts_with($databasePath, __DIR__)) {
+                $databasePath = __DIR__ . '/../../' . $databasePath;
+            }
+            return [
+                'driver' => 'sqlite',
+                'database' => $databasePath,
+                'prefix' => '',
+            ];
         }
         
-        $config = [
-            'driver' => $dbType === 'sqlite' ? 'sqlite' : 'mysql',
-            'database' => $databasePath,
+        // MySQL / MariaDB - نام دیتابیس را درست از env می‌خوانیم
+        $databaseName = $this->config['DB_DATABASE'] ?? 'glyphify_bot';
+        // اگر نام دیتابیس شامل "/" بود، یعنی کاربر اشتباه وارد کرده، فقط نام دیتابیس را استخراج می‌کنیم
+        if (str_contains($databaseName, '/')) {
+            $databaseName = basename($databaseName);
+            Logger::warning("Database name contained path, fixed to: " . $databaseName);
+        }
+        
+        return [
+            'driver' => 'mysql',
+            'host' => $this->config['DB_HOST'] ?? 'localhost',
+            'port' => (int) ($this->config['DB_PORT'] ?? 3306),
+            'database' => $databaseName,
+            'username' => $this->config['DB_USERNAME'] ?? '',
+            'password' => $this->config['DB_PASSWORD'] ?? '',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
+            'strict' => true,
+            'engine' => 'InnoDB',
         ];
-        
-        if ($dbType !== 'sqlite') {
-            $config['host'] = $this->config['DB_HOST'] ?? 'localhost';
-            $config['port'] = (int) ($this->config['DB_PORT'] ?? 3306);
-            $config['username'] = $this->config['DB_USERNAME'] ?? '';
-            $config['password'] = $this->config['DB_PASSWORD'] ?? '';
-            $config['charset'] = 'utf8';
-            $config['collation'] = 'utf8_unicode_ci';
-        }
-        
-        Logger::debug("Database config loaded", ['driver' => $config['driver'], 'path' => $config['database']]);
-        return $config;
     }
 
     private function isDatabaseAvailable(): bool
@@ -149,8 +159,9 @@ class Config
                     $this->dbAvailable = false;
                 }
             } else {
-                Logger::debug("MySQL database assumed available");
+                // MySQL - try to connect
                 $this->dbAvailable = true;
+                Logger::debug("MySQL database assumed available");
             }
         } catch (\Throwable $e) {
             Logger::error("Failed to check database availability: " . $e->getMessage());

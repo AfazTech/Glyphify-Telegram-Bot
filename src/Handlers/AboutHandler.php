@@ -7,8 +7,8 @@ use Bot\Models\UserModel;
 use Neili\Client;
 use Bot\Core\Keyboard;
 
-#[Text(name: 'support')]
-class SupportHandler
+#[Text(name: 'about')]
+class AboutHandler
 {
     public function __construct(
         private Client $client,
@@ -21,7 +21,7 @@ class SupportHandler
         $fromId = $update['message']['from']['id'];
         $lang = $this->userModel->getLanguage($fromId);
 
-        $text = $this->language->get('support_text', $lang);
+        $text = $this->language->get('about_text', $lang);
         $keyboard = Keyboard::mainMenu($lang);
         $this->client->sendMessage($fromId, $text, $keyboard);
     }

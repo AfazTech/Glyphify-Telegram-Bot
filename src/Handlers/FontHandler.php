@@ -12,7 +12,7 @@ use AfazTech\Glyphify\Glyphify;
 #[Text(name: 'font')]
 class FontHandler
 {
-    private const MAX_MESSAGE_LENGTH = 4000; // محدودیت کاراکتر تلگرام
+    private const MAX_MESSAGE_LENGTH = 4000;
 
     public function __construct(
         private Client $client,
@@ -48,6 +48,16 @@ class FontHandler
             );
             return;
         }
+
+        // بررسی خالی بودن متن بعد از trim
+        if (empty($text)) {
+            $this->client->sendMessage(
+                $fromId,
+                $this->language->get('font_empty_error', $lang),
+                Keyboard::cancelButton($lang)
+            );
+            return;
+        }
         
         try {
             Logger::debug("Generating fonts for text", ['text' => $text, 'user_id' => $fromId]);
@@ -65,7 +75,6 @@ class FontHandler
                 return;
             }
             
-            // ارسال همه فونت‌ها بدون محدودیت تعداد
             $this->sendAllFonts($fromId, $fonts, $lang);
             
             $this->userModel->setStep($fromId, null);
@@ -88,35 +97,25 @@ class FontHandler
     {
         $currentMessage = '';
         $totalFonts = count($fonts);
-        $sentCount = 0;
         
         foreach ($fonts as $index => $font) {
-            // اگر نام فونت و متن خالی نباشه
             if (empty($font['name']) || empty($font['text'])) {
                 continue;
             }
             
-            // ساخت یک فونت با فرمت Markdown
             $fontText = "🎨 *" . $this->escapeMarkdown($font['name']) . "*\n";
             $fontText .= "`" . $this->escapeMarkdown($font['text']) . "`\n\n";
             
-            // بررسی محدودیت کاراکتر
             if (strlen($currentMessage) + strlen($fontText) > self::MAX_MESSAGE_LENGTH) {
-                // ارسال پیام فعلی
                 if (!empty($currentMessage)) {
                     $this->sendMessage($userId, $currentMessage);
-                    $sentCount += 1; // فقط برای آمار
                 }
-                
-                // شروع پیام جدید
                 $currentMessage = '';
             }
             
-            // اضافه کردن فونت به پیام فعلی
             $currentMessage .= $fontText;
         }
         
-        // ارسال پیام آخر
         if (!empty($currentMessage)) {
             $this->sendMessage($userId, $currentMessage);
         }
@@ -137,8 +136,7 @@ class FontHandler
                 ['parse_mode' => 'Markdown']
             );
             
-            // تاخیر بین پیام‌ها برای جلوگیری از محدودیت Rate Limit
-            usleep(300000); // 0.3 ثانیه
+            usleep(300000);
             
         } catch (\Throwable $e) {
             Logger::error("Failed to send font message", [
@@ -146,7 +144,6 @@ class FontHandler
                 'error' => $e->getMessage()
             ]);
             
-            // اگر Markdown خطا داد، بدون Markdown بفرست
             try {
                 $cleanMessage = strip_tags($message);
                 $this->client->sendMessage($userId, $cleanMessage);
@@ -162,7 +159,6 @@ class FontHandler
 
     private function escapeMarkdown(string $text): string
     {
-        // کاراکترهای خاص Markdown رو escape کن
         $specialChars = ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'];
         foreach ($specialChars as $char) {
             $text = str_replace($char, '\\' . $char, $text);

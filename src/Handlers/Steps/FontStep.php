@@ -38,6 +38,16 @@ class FontStep
             );
             return;
         }
+
+        // بررسی خالی بودن متن
+        if (empty($text)) {
+            $this->client->sendMessage(
+                $fromId,
+                $this->language->get('font_empty_error', $lang),
+                Keyboard::cancelButton($lang)
+            );
+            return;
+        }
         
         try {
             Logger::debug("FontStep generating fonts", ['text' => $text, 'user_id' => $fromId]);

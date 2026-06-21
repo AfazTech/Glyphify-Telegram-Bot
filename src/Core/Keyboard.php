@@ -12,10 +12,10 @@ class Keyboard
 
         $kb = new KeyboardBuilder();
         
-        // فقط یک ردیف با دو دکمه: پشتیبانی و فونت
+        // دو دکمه: فونت و درباره
         $kb->row(
-            $language->get('support', $lang),
-            $language->get('font', $lang)
+            $language->get('font', $lang),
+            $language->get('about', $lang)
         );
 
         return $kb->resize(true)->oneTime(false)->build();

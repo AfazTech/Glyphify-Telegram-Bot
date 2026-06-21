@@ -23,8 +23,21 @@ class StartHandler
     public function handle(array $update): void
     {
         $fromId = $update['message']['from']['id'];
+        $text = trim($update['message']['text'] ?? '');
         
-        Logger::debug("StartHandler handling user", ['user_id' => $fromId]);
+        Logger::debug("StartHandler handling user", ['user_id' => $fromId, 'text' => $text]);
+        
+        // پشتیبانی از alias برای لغو عملیات و بازگشت
+        $lang = $this->userModel->getLanguage($fromId);
+        $cancelText = $this->language->get('cancel', $lang);
+        $backText = $this->language->get('back', $lang);
+        
+        $isCancel = ($text === '❌ ' . $cancelText || $text === $cancelText);
+        $isBack = ($text === '⬅️ ' . $backText || $text === $backText);
+        
+        if ($isCancel || $isBack) {
+            $this->userModel->setStep($fromId, null);
+        }
         
         $this->userModel->syncUser(
             $fromId,

@@ -22,10 +22,9 @@ class Database
         
         $config = $this->app->getConfig()->getDatabaseConfig();
         
-        // Ensure database path is absolute and in root
+        // فقط برای SQLite مسیر رو اصلاح کن
         if ($config['driver'] === 'sqlite') {
             $databasePath = $config['database'];
-            // If path is relative, make it absolute from root
             if (!str_starts_with($databasePath, '/')) {
                 $databasePath = __DIR__ . '/../../' . $databasePath;
             }
@@ -43,9 +42,9 @@ class Database
                 Logger::info("SQLite database file created", ['file' => $databasePath]);
             }
             
-            // Update config with absolute path
             $config['database'] = $databasePath;
         }
+        // برای MySQL یا سایر درایورها هیچ تغییری در مسیر نمی‌دهیم
         
         $this->capsule->addConnection($config);
         $this->capsule->setAsGlobal();
@@ -63,6 +62,19 @@ class Database
     {
         Logger::info("Initializing database schema");
         $tablesCreated = 0;
+        
+        // برای MySQL بررسی کن که دیتابیس وجود داره
+        $config = $this->app->getConfig()->getDatabaseConfig();
+        if ($config['driver'] === 'mysql') {
+            try {
+                // تست اتصال
+                Capsule::connection()->getPdo();
+                Logger::info("MySQL connection successful");
+            } catch (\Throwable $e) {
+                Logger::error("MySQL connection failed: " . $e->getMessage());
+                throw new \RuntimeException("MySQL connection failed: " . $e->getMessage());
+            }
+        }
         
         if (!Capsule::schema()->hasTable('bot_config')) {
             Capsule::schema()->create('bot_config', function ($table) {
