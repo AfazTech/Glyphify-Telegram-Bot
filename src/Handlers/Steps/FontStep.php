@@ -28,18 +28,6 @@ class FontStep
         $lang = $this->userModel->getLanguage($fromId);
         $text = trim($update['message']['text'] ?? '');
         
-        $cancelText = $this->language->get('cancel', $lang);
-        if ($text === '❌ ' . $cancelText || $text === $cancelText) {
-            $this->userModel->setStep($fromId, null);
-            $this->client->sendMessage(
-                $fromId,
-                $this->language->get('settings_saved', $lang),
-                Keyboard::mainMenu($lang)
-            );
-            return;
-        }
-
-        // بررسی خالی بودن متن
         if (empty($text)) {
             $this->client->sendMessage(
                 $fromId,
@@ -65,7 +53,6 @@ class FontStep
             
             $this->sendAllFonts($fromId, $fonts, $lang);
             
-            $this->userModel->setStep($fromId, null);
             $this->client->sendMessage(
                 $fromId,
                 $this->language->get('main_menu', $lang),
@@ -81,9 +68,11 @@ class FontStep
             
             $this->client->sendMessage(
                 $fromId,
-                $this->language->get('font_error', $lang)
+                $this->language->get('font_error', $lang) . $e->getMessage()
             );
+
         }
+
     }
 
     private function sendAllFonts(int $userId, array $fonts, string $lang): void
