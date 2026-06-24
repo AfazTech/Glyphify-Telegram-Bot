@@ -1,11 +1,12 @@
 <?php
 namespace Bot\Attributes;
 
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Text
 {
     public function __construct(
-        public string $name, // کلید متن در فایل زبان یا دستور (مثلاً /start یا profile)
-        public bool $isCommand = false // اگر true باشد، به عنوان دستور (شروع با /) شناسایی می‌شود
+        public string $name, 
+        public bool $isCommand = false,
+        public int $priority = 0  // بالاترین عدد = اولویت بالاتر
     ) {}
 }

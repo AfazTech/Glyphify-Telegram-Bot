@@ -12,7 +12,6 @@ class Keyboard
 
         $kb = new KeyboardBuilder();
         
-        // دو دکمه: فونت و درباره
         $kb->row(
             $language->get('font', $lang),
             $language->get('about', $lang)
@@ -21,25 +20,13 @@ class Keyboard
         return $kb->resize(true)->oneTime(false)->build();
     }
 
-    public static function cancelButton(?string $lang = null): array
-    {
-        $language = Language::getInstance();
-        $lang = $lang ?? 'fa';
-        
-        return (new KeyboardBuilder())
-            ->row('❌ ' . $language->get('cancel', $lang))
-            ->resize(true)
-            ->oneTime(true)
-            ->build();
-    }
-
     public static function backButton(?string $lang = null): array
     {
         $language = Language::getInstance();
         $lang = $lang ?? 'fa';
         
         return (new KeyboardBuilder())
-            ->row('⬅️ ' . $language->get('back', $lang))
+            ->row($language->get('back', $lang))
             ->resize(true)
             ->oneTime(true)
             ->build();

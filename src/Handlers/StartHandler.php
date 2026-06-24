@@ -10,7 +10,9 @@ use Bot\Core\Keyboard;
 use Neili\Client;
 use Bot\Middleware\JoinMandatoryMiddleware;
 
-#[Text(name: '/start', isCommand: true)]
+#[Text(name: '/start', isCommand: true, priority: 100)]
+#[Text(name: '/restart', isCommand: true, priority: 90)]
+#[Text(name: 'back', priority: 10)]  
 class StartHandler
 {
     public function __construct(
@@ -26,18 +28,6 @@ class StartHandler
         $text = trim($update['message']['text'] ?? '');
         
         Logger::debug("StartHandler handling user", ['user_id' => $fromId, 'text' => $text]);
-        
-        // پشتیبانی از alias برای لغو عملیات و بازگشت
-        $lang = $this->userModel->getLanguage($fromId);
-        $cancelText = $this->language->get('cancel', $lang);
-        $backText = $this->language->get('back', $lang);
-        
-        $isCancel = ($text === '❌ ' . $cancelText || $text === $cancelText);
-        $isBack = ($text === '⬅️ ' . $backText || $text === $backText);
-        
-        if ($isCancel || $isBack) {
-            $this->userModel->setStep($fromId, null);
-        }
         
         $this->userModel->syncUser(
             $fromId,

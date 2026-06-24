@@ -67,16 +67,41 @@ class Router
                 continue;
             }
             
-            $textAttr = $this->getAttribute($reflection, Text::class);
-            if ($textAttr) {
-                if ($textAttr->isCommand) {
-                    $this->commands[$textAttr->name] = $className;
-                    Logger::debug("Discovered command handler", ['name' => $textAttr->name, 'class' => $className]);
-                } else {
-                    $this->texts[$textAttr->name] = $className;
-                    Logger::debug("Discovered text/button handler", ['name' => $textAttr->name, 'class' => $className]);
+            // Get all Text attributes (including repeatable ones)
+            $textAttrs = $reflection->getAttributes(Text::class);
+            if (!empty($textAttrs)) {
+                foreach ($textAttrs as $attr) {
+                    $textAttr = $attr->newInstance();
+                    $handlerData = [
+                        'class' => $className,
+                        'priority' => $textAttr->priority
+                    ];
+                    
+                    if ($textAttr->isCommand) {
+                        // برای کامندها، اگر قبلاً وجود داشت، اولویت بالاتر را نگه دار
+                        if (!isset($this->commands[$textAttr->name]) || 
+                            $textAttr->priority > $this->commands[$textAttr->name]['priority']) {
+                            $this->commands[$textAttr->name] = $handlerData;
+                        }
+                        Logger::debug("Discovered command handler", [
+                            'name' => $textAttr->name, 
+                            'class' => $className,
+                            'priority' => $textAttr->priority
+                        ]);
+                    } else {
+                        // برای تکست‌ها، اگر قبلاً وجود داشت، اولویت بالاتر را نگه دار
+                        if (!isset($this->texts[$textAttr->name]) || 
+                            $textAttr->priority > $this->texts[$textAttr->name]['priority']) {
+                            $this->texts[$textAttr->name] = $handlerData;
+                        }
+                        Logger::debug("Discovered text/button handler", [
+                            'name' => $textAttr->name, 
+                            'class' => $className,
+                            'priority' => $textAttr->priority
+                        ]);
+                    }
+                    $discoveredCount++;
                 }
-                $discoveredCount++;
             }
         }
         
@@ -124,15 +149,54 @@ class Router
             return;
         }
 
+        // اولویت 1: کامندها (با بالاترین اولویت)
         if ($text !== '' && str_starts_with($text, '/')) {
             $commandName = explode(' ', $text)[0];
             if (isset($this->commands[$commandName])) {
-                Logger::debug("Command matched", ['command' => $commandName, 'class' => $this->commands[$commandName]]);
-                $this->executeHandler($this->commands[$commandName], $update);
+                Logger::debug("Command matched", [
+                    'command' => $commandName, 
+                    'class' => $this->commands[$commandName]['class'],
+                    'priority' => $this->commands[$commandName]['priority']
+                ]);
+                $this->executeHandler($this->commands[$commandName]['class'], $update);
                 return;
             }
         }
 
+        // اولویت 2: تکست‌های معمولی (مانند back) - قبل از استپ‌ها
+        // این کار باعث می‌شود دکمه back حتی در حالت استپ هم کار کند
+        if ($text !== '') {
+            $language = Language::getInstance();
+            $lang = $this->userModel->getLanguage($fromId);
+            
+            // مرتب‌سازی تکست‌ها بر اساس اولویت (بالاترین اولویت اول)
+            $sortedTexts = $this->texts;
+            uasort($sortedTexts, function($a, $b) {
+                return $b['priority'] <=> $a['priority'];
+            });
+            
+            foreach ($sortedTexts as $textKey => $config) {
+                $translatedText = $language->get($textKey, $lang);
+                if ($text === $translatedText) {
+                    Logger::debug("Text/Button matched (before step)", [
+                        'textKey' => $textKey, 
+                        'class' => $config['class'],
+                        'priority' => $config['priority']
+                    ]);
+                    
+                    // اگر textKey برابر با 'back' باشد، استپ را پاک می‌کنیم
+                    if ($textKey === 'back') {
+                        $this->userModel->setStep($fromId, null);
+                        Logger::debug("Step cleared for back button", ['user_id' => $fromId]);
+                    }
+                    
+                    $this->executeHandler($config['class'], $update);
+                    return;
+                }
+            }
+        }
+
+        // اولویت 3: استپ‌ها
         $currentStep = $this->userModel->getStep($fromId);
         if ($currentStep !== null && isset($this->steps[$currentStep])) {
             $stepConfig = $this->steps[$currentStep];
@@ -143,20 +207,6 @@ class Router
                 $this->userModel->setStep($fromId, $stepConfig['next']);
             }
             return;
-        }
-
-        if ($text !== '') {
-            $language = Language::getInstance();
-            $lang = $this->userModel->getLanguage($fromId);
-            
-            foreach ($this->texts as $textKey => $className) {
-                $translatedText = $language->get($textKey, $lang);
-                if ($text === $translatedText) {
-                    Logger::debug("Text/Button matched", ['textKey' => $textKey, 'class' => $className]);
-                    $this->executeHandler($className, $update);
-                    return;
-                }
-            }
         }
 
         Logger::debug("No route matched, sending unknown command message", ['user_id' => $fromId, 'text' => $text]);

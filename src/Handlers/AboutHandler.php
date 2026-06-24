@@ -7,7 +7,7 @@ use Bot\Models\UserModel;
 use Neili\Client;
 use Bot\Core\Keyboard;
 
-#[Text(name: 'about')]
+#[Text(name: 'about', priority: 5)]
 class AboutHandler
 {
     public function __construct(

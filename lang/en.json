@@ -1,16 +1,17 @@
 {
-  "language_name": "English",
+  "language_name": "Persian",
   "welcome": "👋 Welcome to Glyphify Fonts Bot!",
-  "start_message": "👋 Welcome to the text to fonts converter bot!\n\n✨ This bot helps you transform your text into a variety of beautiful fonts.\n\n📌 Please use the buttons below:",
-  "main_menu": "📋 Main Menu",
-  "about": "ℹ️ About Bot",
-  "about_text": "🤖 Glyphify Fonts Text to Fonts Converter Bot\n\n✨ This bot allows you to convert your text into more than 100 different font styles.\n\nFeatures:\n• ✍️ Convert text into various fonts\n• 🌐 Supports Persian and English languages\n• ⚡ Fast and completely free\n\nDeveloper: @your_username\nChannel: @your_channel\n\nHow to use:\n1️⃣ Click the convert to font button\n2️⃣ Enter your desired text\n3️⃣ Receive the list of fonts\n\nYou can also use /start to restart the bot.",
+  "start_message": "✨ Welcome to the text-to-font bot!\n\nWith this bot, you can convert your text into hundreds of beautiful and unique fonts.\n\n📌 Please choose one of the options below to get started:",
+  "about": "ℹ️ Help",
+  "about_text": "🤖 Glyphify Fonts Bot\n\n✨ This bot helps you convert your text into more than 100 stylish and unique fonts.\n\n🌟 Features:\n• ✍️ Convert text into various fonts\n• 🌐 Supports Persian and English\n• ⚡ Fast and completely free\n• 📋 Easy copy-to-clipboard fonts\n\n👨‍💻 Developer: @MrAfaz\n📢 Channel: @DevFeedX\n\n📖 How to use:\n1️⃣ Tap on \"Convert to Font\"\n2️⃣ Send your desired text\n3️⃣ Receive and copy different font styles\n\n🔄 Send /start anytime to return to the main menu.",
   "font": "✍️ Convert to Font",
-  "font_prompt": "📝 Please enter the text you want to convert into fonts:\n\n💡 You can enter any text (Persian or English)",
+  "font_prompt": "📝 Please send the text you want to convert into fonts.\n\n💡 You can enter either Persian or English text.",
   "font_empty_error": "⚠️ Please enter a valid text.\n\n🚫 Text cannot be empty.",
-  "font_more": "✨ {count} more fonts are available. Try again to see all.",
-  "font_error": "❌ Error generating fonts. Please try again.\nNote: The text must include at least one Persian or English character.",  "back": "🔙 Back",
-  "unknown_command": "❓ Invalid command. Please use the menu buttons.\n /start",
-  "error": "⚠️ An error occurred. Please try again.",
-  "blocked": "⛔ You have been blocked from the bot for {duration} seconds due to spam."
+  "font_more": "✨ {count} more fonts are available. Try again to see more.",
+  "font_error": "❌ Error generating fonts.\n\nPlease try again.\nThe text must contain at least one Persian or English character.",
+  "back": "🔙 Back",
+  "unknown_command": "❓ Invalid command.\n\nPlease use the menu buttons or send /start.",
+  "error": "⚠️ Something went wrong. Please try again.",
+  "blocked": "⛔ You have been temporarily blocked for {duration} seconds due to spam activity.",
+  "font_ready": "🎉 Your fonts are ready.\n\nTo copy, simply click on the font you like:"
 }
